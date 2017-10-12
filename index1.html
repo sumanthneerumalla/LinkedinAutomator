@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* The snackbar - position it at the bottom and in the middle of the screen */
+        #snackbar {
+            visibility: hidden; /* Hidden by default. Visible on click */
+            min-width: 250px; /* Set a default minimum width */
+            margin-left: -125px; /* Divide value of min-width by 2 */
+            background-color: #333; /* Black background color */
+            color: #fff; /* White text color */
+            text-align: center; /* Centered text */
+            border-radius: 2px; /* Rounded borders */
+            padding: 16px; /* Padding */
+            position: fixed; /* Sit on top of the screen */
+            z-index: 1; /* Add a z-index if needed */
+            left: 50%; /* Center the snackbar */
+            bottom: 30px; /* 30px from the bottom */
+        }
+
+        /* Show the snackbar when clicking on a button (class added with JavaScript) */
+        #snackbar.show {
+            visibility: visible; /* Show the snackbar */
+
+            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+            However, delay the fade out process for 2.5 seconds */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        /* Animations to fade the snackbar in and out */
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="CompanyForm" align="center">
+<form id="accessForm">
+
+    <input id="companyText" type="text" autofocus="autofocus" size="65%" height="20" placeholder="Company name"/>
+    <button id="submitButton" type="submit">Get</button>
+</form></div>
+<br/>
+<br/>
+<div id="LinkCleaner" align="center">
+<form id="cleanForm">
+    <input id="urlEntry" type="text" size="65%" placeholder="http://example.com?arg=1"/>
+    <button data-clipboard-text="" id="urlSubmit" type="submit">Clean</button>
+</form>
+</div>
+<br><br>
+
+<div id="snackbar">Text copied to clipboard!</div>
+
+<!--<div id="cleanedResults" align="center">-->
+
+    <!--<input id="resultsHere" type="text" size="65%" placeholder="Cleaned url output here">-->
+
+<!--</div>-->
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+
+
+
+<script>
+
+        $("#accessForm").submit(function(event){
+          event.preventDefault();
+        });
+        $("#cleanForm").submit(function(event){
+            event.preventDefault();
+        });
+    //    function onBtnClick() {
+    //			var company = $().val();
+    //			console.log(company)
+    //    }
+
+    // $("#getData").click(onBtnClick);
+
+
+    var button1 = document.getElementById('submitButton');
+    button1.onclick = function () {
+        var companyName = document.getElementById('companyText').value;
+        var url = "https://www.linkedin.com/search/results/index/?keywords=";
+        var bizDev = "%20business%20development";
+        var marketing = "%20marketing";
+        var ceo = "%20ceo";
+
+        var marketingURL = url + companyName + marketing;
+        var bizDevURL = url + companyName + bizDev;
+        var ceoURL = url + companyName + ceo;
+
+        window.open(marketingURL, "_blank");
+        window.open(bizDevURL, "_blank");
+        window.open(ceoURL, "_blank");
+
+        var twitterSearch = "https://www.google.com/search?q=" + companyName + "%20twitter";
+        window.open(twitterSearch , "_blank");
+
+    };
+
+        function snackbar() {
+            // Get the snackbar DIV
+            var x = document.getElementById("snackbar")
+
+            // Add the "show" class to DIV
+            x.className = "show";
+
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+
+        var button2 = document.getElementById('urlSubmit');
+        button2.onclick = function () {
+            var junkUrl = document.getElementById('urlEntry').value;
+            junkUrl = junkUrl.slice(0,junkUrl.indexOf("?"));
+//            document.getElementById("resultsHere").value = junkUrl;
+            document.getElementById("urlEntry").value = junkUrl;
+//            document.getElementById("urlSubmit").data-clipboard-text = junkUrl;
+
+            document.getElementById("urlEntry").select();
+            document.execCommand('copy');
+            snackbar();
+            var clipboard = new Clipboard('');
+        }
+
+
+
+</script>
+
+
+</body>
+</html>
